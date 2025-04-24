@@ -67,3 +67,5 @@ plt.quiver(X, Y, U / scaledown, V / scaledown, scale=1, color="blue")
 plt.imshow(img, cmap='gray', alpha=0.75)
 
 plt.show()
+
+# TODO add threshold magnitude
