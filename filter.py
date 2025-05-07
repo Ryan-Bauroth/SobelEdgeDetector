@@ -2,13 +2,15 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-img = cv2.imread('images/cutecat.jpg', cv2.IMREAD_GRAYSCALE).astype(float)
+img = cv2.imread('images/ori.jpeg', cv2.IMREAD_GRAYSCALE).astype(float)
 height, width = img.shape
 
-plt.subplot(1, 3, 1)
-plt.title("Original Image")
-plt.axis('off')
-plt.imshow(img, cmap='gray', alpha=1.0)
+fig, axes = plt.subplots(2, 2, figsize=(7, 7))
+axes = axes.flatten()
+
+axes[0].set_title("Original Image")
+axes[0].axis('off')
+axes[0].imshow(img, cmap='gray', alpha=1.0)
 
 sobel_x = [
         [-1, 0, 1],
@@ -42,11 +44,45 @@ magnitude = np.sqrt(Gx**2 + Gy**2)
 # normalizes between 0-255 for image
 magnitude = (magnitude / magnitude.max()) * 255
 
+# puts magnitude in bins
+hist, bin_edges = np.histogram(magnitude, bins=256, range=(0, 256))
+# P => % of data at each index
+P = hist / np.sum(hist)
+
+# weight[t] => cumulative weight up until t
+# same with mean
+cumulative_weight = np.cumsum(P)
+cumulative_mean = np.cumsum(P * np.arange(256))
+total_mean = cumulative_mean[-1]
+
+best_threshold = 0
+max_variance = 0
+
+# tries each threshold value
+for t in range(1, 256):
+    # calculating weights and means for each threshold
+    weight0 = cumulative_weight[t]
+    weight1 = 1 - weight0
+    mean0 = cumulative_mean[t] / weight0 if weight0 != 0 else 0
+    mean1 = (total_mean - cumulative_mean[t]) / weight1 if weight1 != 0 else 0
+
+    # trying to maximize between class variance
+    between_class_variance = weight0 * weight1 * (mean0 - mean1) ** 2
+
+    if between_class_variance > max_variance:
+        max_variance = between_class_variance
+        best_threshold = t
+
+binary_image = magnitude > best_threshold
+
+axes[3].imshow(binary_image, cmap='gray')
+axes[3].set_title("Otsu's Threshold")
+axes[3].axis('off')
+
 # plots edge detection example
-plt.subplot(1, 3, 3)
-plt.imshow(magnitude, cmap='gray')
-plt.title("Output Image")
-plt.axis('off')
+axes[1].imshow(magnitude, cmap='gray')
+axes[1].set_title("Output Image")
+axes[1].axis('off')
 
 # only shows some vectors
 step = 7
@@ -59,13 +95,11 @@ V = Gy[Y, X]
 
 # plots quiver with vectors scaled down
 scaledown = 3000
-plt.subplot(1, 3, 2)
-plt.axis('off')
-plt.title("Edge Vectors")
-plt.gca().invert_yaxis()
-plt.quiver(X, Y, U / scaledown, V / scaledown, scale=1, color="blue")
-plt.imshow(img, cmap='gray', alpha=0.75)
+axes[2].axis('off')
+axes[2].set_title("Edge Vectors")
+axes[2].invert_yaxis()
+axes[2].quiver(X, Y, U / scaledown, V / scaledown, scale=1, color="blue")
+axes[2].imshow(img, cmap='gray', alpha=0.75)
 
+plt.subplots_adjust(wspace=0.5)
 plt.show()
-
-# TODO add threshold magnitude
