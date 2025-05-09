@@ -10,7 +10,7 @@ create an 'outline' of an image.
 
 ## Installation & Use
 1. Clone the repository by copying the HTTPS link into 
-the IDE of your choice.
+the IDE of your choice & install needed packages.
 2. Add images to the '/images' folder (optional)
 3. Change the address ```'images/YOUR_IMAGE.png'```
 on line 5 in the file 'filter.py' to your image's location
