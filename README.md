@@ -27,10 +27,14 @@ Unfortunately, images don't come with their own functions,
 so we have to estimate the gradient by assessing the change 
 in both the X and Y directions over a 3x3 area of pixels. 
 Doing this across the entire image forms an array representing
-the estimated amount of change for each pixel.
+the estimated amount of change for each pixel. 
+
+*In the example image above, notice the edge vectors.*
 
 The values of this array are then normalized from (0-255) and
-turned back into an image.
+turned back into an image. 
+
+*In the example image above, notice the output image*
 
 ## Otsu's Method
 With the base method of edge detection, images often are muted.
@@ -41,3 +45,5 @@ class variation. This threshold can then be used to create
 a binary array, where locations of low change are black (0),
 and locations of high change are white (1), while avoiding
 the noise caused by SED alone.
+
+*In the example image above, notice the Otsu's threshold*
