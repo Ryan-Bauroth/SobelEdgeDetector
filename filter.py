@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-img = cv2.imread('images/ori.jpeg', cv2.IMREAD_GRAYSCALE).astype(float)
+img = cv2.imread('images/mario.png', cv2.IMREAD_GRAYSCALE).astype(float)
 height, width = img.shape
 
 fig, axes = plt.subplots(2, 2, figsize=(7, 7))
