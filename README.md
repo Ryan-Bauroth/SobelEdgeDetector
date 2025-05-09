@@ -6,7 +6,7 @@ the steps of a Sobel Edge Detector (SED). A SED estimates
 the gradient of each pixel in an image in order to
 create an 'outline' of an image. 
 
-![myplot](https://github.com/user-attachments/assets/f4fc18a6-3fa1-4f93-9bdf-1e2dcdf46b5d)
+![myplot-2](https://github.com/user-attachments/assets/c4efeefd-db2b-4151-8cd4-13ab601b3038)
 
 ## Installation & Use
 1. Clone the repository by copying the HTTPS link into 
